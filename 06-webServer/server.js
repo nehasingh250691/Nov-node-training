@@ -5,7 +5,8 @@ const url = require('url');
 
 
 var server = http.createServer((req,res)=>{
-    var filepath = path.join(__dirname,url.parse(req.url).pathname);
+    var urlObj = url.parse(req.url === '/' ? '/index.html': req.url);
+    var filepath = path.join(__dirname,urlObj.pathname);
 
     if(!fs.existsSync(filepath)){
         res.statusCode = 404;

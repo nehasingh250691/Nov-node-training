@@ -1,28 +1,26 @@
 const http = require('http');
-const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const querystring = require('querystring');
+const calculator = require('./calculator');
 
 
 var server = http.createServer((req,res)=>{
-    var filepath = path.join(__dirname,url.parse(req.url).pathname);
-
-    if(!fs.existsSync(filepath)){
+    var urlObj = url.parse(req.url === '/' ? './index.html': req.url);
+    
+    if(urlObj.pathname === '/calculator'){
+        var queryString = querystring.parse(urlObj.query);
+        //console.log(queryString);
+        var op = queryString.op,
+            n1 = parseInt(queryString.num1),
+            n2 = parseInt(queryString.num2);
+        res.write((calculator[op](n1,n2)).toString());
+        res.end();
+    }
+    else{
         res.statusCode = 404;
         res.end();
-        return;
     }
-    var stream = fs.createReadStream(filepath,{encoding:'utf8'});
-
-    // stream.on('data',function(chunk){
-    //     res.write(chunk);
-    // });
-    // stream.on('end', () =>{
-    //     res.end();
-    // });
-    
-    //if we are just passing the data from one stream to another and not doing anything with data just add the 2 streams using pipe
-    stream.pipe(res);
 });
 
 server.listen(8080, function(){
