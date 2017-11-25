@@ -12,8 +12,8 @@ var server = http.createServer((req,res)=>{
         var queryString = querystring.parse(urlObj.query);
         //console.log(queryString);
         var op = queryString.op,
-            n1 = parseInt(queryString.num1),
-            n2 = parseInt(queryString.num2);
+            n1 = parseInt(queryString.n1),
+            n2 = parseInt(queryString.n2);
         res.write((calculator[op](n1,n2)).toString());
         res.end();
     }
