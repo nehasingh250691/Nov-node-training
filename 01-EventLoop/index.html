@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Event Loop</title>
+	<script>
+		(function(){
+			window.addEventListener('DOMContentLoaded',init);
+			function init(){
+				var btnDoWork = document.getElementById('btnDoWork');
+				btnDoWork.addEventListener('click',onBtnDoWorkClick);
+			}
+			function onBtnDoWorkClick(){
+				displayMessage('Work Started');
+				setTimeout(triggerWork);
+				displayMessage('dummy');
+			}
+			function triggerWork(){
+				doWork(onWorkCompletion);
+			}
+            function onWorkCompletion(){                
+				displayMessage('Work Completed!');
+            }
+			function displayMessage(msg){
+				document.getElementById('divMessages').innerHTML += msg+ "<br/>";
+			}
+			function doWork(onComplete){
+                var totalIteration = 1000,
+                    currIteration = 0;
+
+                    function oneIteration(){
+                        for(var i=0; i < 10000/totalIteration; i++)
+                            for(var j=0; j < 10000; j++)
+                                for(var k=0; k < 100; k++){
+
+                                }
+                    }
+			}
+
+            function breakForLoop(startIndex , endIndex,onComplete){
+                console.log(startIndex,endIndex);
+                for(var i=startIndex; i < endIndex; i++)
+					for(var j=0; j < 10000; j++)
+						for(var k=0; k < 100; k++){
+
+						}
+                        if(endIndex < 1000){                
+                        startIndex = startIndex+10;
+                        endIndex = endIndex+10;
+                        setTimeout(() => {
+                            breakForLoop(startIndex,endIndex);
+                        })
+                        }
+                        else{
+                            if( typeof onComplete === 'function'){
+                                onComplete();
+                            }
+                        }
+
+                    
+            }
+		})();
+	</script>
+</head>
+<body>
+	<input type="text" >
+	<input type="button" value="Do Work" id="btnDoWork">
+	<div id="divMessages"></div>
+</body>
+</html>
